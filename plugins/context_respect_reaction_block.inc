@@ -496,6 +496,15 @@ class context_respect_reaction_block extends context_reaction {
    *   Boolean determining if logged in user has block access
    */
   protected function check_role_match($block) {
+    //Check for overriden variables
+    $overrides = variable_get('context_respect_override_role',false);
+    if($overrides) {
+      foreach($overrides as $or_bid => $or_val) {
+        if($or_bid == $block->bid) {
+          return $or_val;
+        }
+      }
+    }
     global $user;
     //Always return true for admin user
     if($user->uid == 1) {
@@ -527,6 +536,15 @@ class context_respect_reaction_block extends context_reaction {
    *   Boolean determining if page access is granted to block
    */
   protected function check_page_match($block) {
+    //Check for overriden variables
+    $overrides = variable_get('context_respect_override_page',false);
+    if($overrides) {
+      foreach($overrides as $or_bid => $or_val) {
+        if($or_bid == $block->bid) {
+          return $or_val;
+        }
+      }
+    }
     $block_data = db_query("SELECT pages, visibility FROM {block} b where b.delta = :delta and b.module = :module", array(':delta' => $block->delta, ':module' => $block->module))->fetch();
     $page_match = TRUE;
     //Bpass check if there are no pages set for a block
