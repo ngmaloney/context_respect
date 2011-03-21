@@ -1,0 +1,8 @@
+<?php
+
+/*
+ * hook_enable
+ */
+function context_reaction_enable() {
+  context_invalidate_cache();
+}
